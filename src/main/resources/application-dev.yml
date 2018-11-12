@@ -1,0 +1,13 @@
+application:
+server:
+  port: 8000
+swagger:
+  title: Maven Spring Blog API
+  description: Maven Spring Blog API documentation
+  version: 0.0.1
+  terms-of-service-url:
+  contact-name:
+  contact-url:
+  contact-email:
+  license:
+  license-url:
