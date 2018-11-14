@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
@@ -26,12 +27,18 @@ public class User implements Serializable, DomainInterface {
 
     private static final long serialVersionUID = 1L;
 
+    public User(){}
+    public User(String login, String password, String name){
+        this.login = login;
+        this.password = password;
+        this.name = name;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Email
+    @Pattern(regexp = "^[_.@A-Za-z0-9-]*$")
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
     private String login;

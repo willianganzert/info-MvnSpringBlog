@@ -14,11 +14,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api")
 public class UserResource {
     private static final String ENTITY_NAME = "user";
+
+
+
 
     private UserService userService;
 
@@ -44,25 +47,26 @@ public class UserResource {
                 .body(result);
     }
 
-    @PutMapping("/users")
-    public ResponseEntity<?> updateUser(@RequestBody User user) throws URISyntaxException {
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) throws URISyntaxException {
         Optional<String> opLogin = SecurityUtils.getCurrentUserLogin();
+        if(!opLogin.isPresent()) {
+            return new ResponseEntity<>("error.http.403",HttpStatus.FORBIDDEN);
+        }
         if (user.getId() == null) {
             return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
         }
-        else if(!SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
-            Optional<User> opDBUser = userService.findOne(user.getId());
-            if(!opLogin.isPresent()) {
-                return new ResponseEntity<>("error.http.403",HttpStatus.FORBIDDEN);
-            }
+        Optional<User> opDBUser = userService.findOne(user.getId());
+        if (!opDBUser.isPresent() || opDBUser.get().getId().equals(id)) {
+            return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
+        }
+        if(!SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
             if(!opDBUser.get().getLogin().equals(user.getLogin())) {
                 return new ResponseEntity<>("error.http.999.user.author.update_author",HttpStatus.FORBIDDEN);
             }
             if(!opDBUser.get().getLogin().equals(opLogin.get())) {
                 return new ResponseEntity<>("error.http.999.user.author.update",HttpStatus.FORBIDDEN);
             }
-
-
         }
         User result = userService.persist(user);
         return ResponseEntity.ok()

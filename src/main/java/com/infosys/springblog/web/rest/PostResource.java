@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api")
 public class PostResource {
@@ -44,17 +44,20 @@ public class PostResource {
                 .body(result);
     }
 
-    @PutMapping("/posts")
-    public ResponseEntity<?> updatePost(@RequestBody Post post) throws URISyntaxException {
+    @PutMapping("/posts/{id}")
+    public ResponseEntity<?> updatePost(@RequestBody Post post,@PathVariable Long id) throws URISyntaxException {
         Optional<String> opLogin = SecurityUtils.getCurrentUserLogin();
-        if (post.getId() == null) {
+        if(!opLogin.isPresent()) {
+            return new ResponseEntity<>("error.http.403",HttpStatus.FORBIDDEN);
+        }
+        if (id == null) {
             return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
         }
-        else if(!SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
-            Optional<Post> opDBPost = postService.findOne(post.getId());
-            if(!opLogin.isPresent()) {
-                return new ResponseEntity<>("error.http.403",HttpStatus.FORBIDDEN);
-            }
+        Optional<Post> opDBPost = postService.findOne(id);
+        if (!opDBPost.isPresent() || opDBPost.get().getId().equals(id)) {
+            return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
+        }
+        if(!SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
             if(!opDBPost.get().getUser().getLogin().equals(post.getUser().getLogin())) {
                 return new ResponseEntity<>("error.http.999.post.author.update_author",HttpStatus.FORBIDDEN);
             }
@@ -62,11 +65,10 @@ public class PostResource {
                 return new ResponseEntity<>("error.http.999.post.author.update",HttpStatus.FORBIDDEN);
             }
 
-
         }
         Post result = postService.persist(post);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, post.getId().toString()))
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
                 .body(result);
     }
 

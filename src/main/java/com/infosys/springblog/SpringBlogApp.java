@@ -74,10 +74,10 @@ public class SpringBlogApp {
             System.out.print("The host name could not be determined, using `localhost` as fallback");
         }
         System.out.print(String.format("\n----------------------------------------------------------\n\t" +
-                        "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\t{}://localhost:{}{}\n\t" +
-                        "External: \t{}://{}:{}{}\n\t" +
-                        "Profile(s): \t{}\n----------------------------------------------------------",
+                        "Application %s is running! Access URLs:\n\t" +
+                        "Local: \t\t%s://localhost:%s%s\n\t" +
+                        "External: \t%s://%s:%s%s\n\t" +
+                        "Profile(s): \t%s\n----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
                 protocol,
                 serverPort,
@@ -86,7 +86,7 @@ public class SpringBlogApp {
                 hostAddress,
                 serverPort,
                 contextPath,
-                env.getActiveProfiles()));
+                Arrays.toString(env.getActiveProfiles()))   );
     }
 }
 

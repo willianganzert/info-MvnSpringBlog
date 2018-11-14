@@ -17,4 +17,5 @@ public interface UserService {
     Optional<User> findOne(Long id);
 
     User delete(Long id);
+
 }

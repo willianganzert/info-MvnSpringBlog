@@ -1,6 +1,7 @@
 package com.infosys.springblog.repository;
 
 import com.infosys.springblog.domain.DomainInterface;
+import com.infosys.springblog.domain.User;
 
 import java.util.*;
 
@@ -14,8 +15,17 @@ public class TempRepoSingleton {
     public static TempRepoSingleton getInstance(){
         if(tempRepoSingleton == null){
             tempRepoSingleton = new TempRepoSingleton();
+            createDefaultUsers();
         }
         return tempRepoSingleton;
+    }
+
+    private static void createDefaultUsers() {
+        UserRepository userRepository = new UserRepository();
+        userRepository.persist(new User("willian.lopes@info.com","willian", "willian"));
+        userRepository.persist(new User("kurt.moriber@info.com","kurt", "kurt"));
+        userRepository.persist(new User("ian.kowza@info.com","ian", "ian"));
+        userRepository.persist(new User("jimi.george@info.com","jimi", "jimi"));
     }
 
     public <T> List<T> findAll(Class<T> tab){
