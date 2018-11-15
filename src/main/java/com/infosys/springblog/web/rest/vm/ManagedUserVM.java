@@ -1,6 +1,6 @@
 package com.infosys.springblog.web.rest.vm;
 
-import com.infosys.springblog.service.UserDTO;
+import com.infosys.springblog.service.DTO.UserDTO;
 
 import javax.validation.constraints.Size;
 

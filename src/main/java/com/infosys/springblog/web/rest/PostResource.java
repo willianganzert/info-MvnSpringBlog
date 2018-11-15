@@ -54,7 +54,7 @@ public class PostResource {
             return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
         }
         Optional<Post> opDBPost = postService.findOne(id);
-        if (!opDBPost.isPresent() || opDBPost.get().getId().equals(id)) {
+        if (!opDBPost.isPresent() || !opDBPost.get().getId().equals(id)) {
             return new ResponseEntity<>("error.http.999.put",HttpStatus.BAD_REQUEST);
         }
         if(!SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
