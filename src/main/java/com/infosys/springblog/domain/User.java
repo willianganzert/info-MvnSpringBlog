@@ -43,7 +43,7 @@ public class User implements Serializable, DomainInterface {
     @Column(length = 254, unique = true)
     private String login;
 
-    @JsonIgnore
+ //   @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
     @Column(name = "password_hash", length = 60, nullable = false)

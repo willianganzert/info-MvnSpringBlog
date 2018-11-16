@@ -20,7 +20,7 @@ import javax.validation.Valid;
 /**
  * Controller to authenticate users.
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
