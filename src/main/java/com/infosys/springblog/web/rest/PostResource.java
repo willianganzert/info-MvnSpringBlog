@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class PostResource {
