@@ -24,4 +24,15 @@ public class TestUtil {
 
         return mapper.writeValueAsBytes(object);
     }
+
+    public static <T> T convertJsonBytesToObject(byte[] bytes, Class<T> clazz)
+            throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+        JavaTimeModule module = new JavaTimeModule();
+        mapper.registerModule(module);
+
+        return mapper.readValue(bytes,clazz);
+    }
 }

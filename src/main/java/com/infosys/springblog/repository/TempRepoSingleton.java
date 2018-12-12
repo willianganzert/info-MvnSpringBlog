@@ -100,16 +100,17 @@ public class TempRepoSingleton {
     }
 
     public <T extends DomainInterface> T delete(Class<T> tab, Long id){
+        T o = null;
         try {
             getUpdateDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
         if(mapDB.containsKey(tab) && mapDB.get(tab).containsKey(id)){
-            return (T) mapDB.get(tab).remove(id);
+            o = (T) mapDB.get(tab).remove(id);
         }
         updateDB();
-        return null;
+        return o;
     }
 
     private synchronized Long getLastId(Class tab){
@@ -151,7 +152,6 @@ public class TempRepoSingleton {
                                  if(di.getId() > mapDBIDS.get(clazz)) {
                                      mapDBIDS.put(clazz, di.getId());
                                  }
-                                 System.out.println(di);
                              } catch (IOException e1) {
                                  e1.printStackTrace();
                              }

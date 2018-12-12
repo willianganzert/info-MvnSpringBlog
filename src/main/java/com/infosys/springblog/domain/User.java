@@ -1,17 +1,13 @@
 package com.infosys.springblog.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 //import org.hibernate.annotations.BatchSize;
 //import org.hibernate.annotations.Cache;

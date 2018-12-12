@@ -30,9 +30,6 @@ public class UserResource {
     private UserService userService;
 
     public UserResource(UserService userService) {
-        if(userService == null){
-            userService = new UserRepository();
-        }
         this.userService = userService;
     }
 
