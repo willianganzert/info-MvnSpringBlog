@@ -1,0 +1,10 @@
+blog.config.secured-api: true
+
+spring.application.name: Maven Spring Blog API
+application:
+server:
+  port: 8000
+swagger:
+  title: Maven Spring Blog API
+  description: Maven Spring Blog API documentation
+  version: 0.0.1

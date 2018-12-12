@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import javax.transaction.Transactional;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,14 +64,14 @@ public class UserJWTControllerIntTest {
     public void testAuthorize() throws Exception {
         User user = new User();
         user.setLogin("user-jwt-controller");
-        user.setPassword(passwordEncoder.encode("test"));
+        user.setPassword("test");
 
         User userToBeDelete = userRepository.persist(user);
 
         LoginVM login = new LoginVM();
         login.setUsername("user-jwt-controller");
         login.setPassword("test");
-       /* MockHttpServletRequestBuilder mk =  post("/api/authenticate");
+        MockHttpServletRequestBuilder mk =  post("/api/authenticate");
         mockMvc.perform(mk
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(login)))
@@ -78,32 +80,7 @@ public class UserJWTControllerIntTest {
             .andExpect(jsonPath("$.id_token").isNotEmpty())
             .andExpect(header().string("Authorization", not(nullValue())))
             .andExpect(header().string("Authorization", not(isEmptyString())));
-        userRepository.delete(userToBeDelete.getId());*/
-    }
-
-    /*@Test
-    @Transactional
-    public void testAuthorizeWithRememberMe() throws Exception {
-        User user = new User();
-        user.setLogin("user-jwt-controller-remember-me");
-        user.setEmail("user-jwt-controller-remember-me@example.com");
-        user.setActivated(true);
-        user.setPassword(passwordEncoder.encode("test"));
-
-        userRepository.saveAndFlush(user);
-
-        LoginVM login = new LoginVM();
-        login.setUsername("user-jwt-controller-remember-me");
-        login.setPassword("test");
-        login.setRememberMe(true);
-        mockMvc.perform(post("/api/authenticate")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(login)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id_token").isString())
-            .andExpect(jsonPath("$.id_token").isNotEmpty())
-            .andExpect(header().string("Authorization", not(nullValue())))
-            .andExpect(header().string("Authorization", not(isEmptyString())));
+        userRepository.delete(userToBeDelete.getId());
     }
 
     @Test
@@ -118,5 +95,5 @@ public class UserJWTControllerIntTest {
             .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.id_token").doesNotExist())
             .andExpect(header().doesNotExist("Authorization"));
-    }*/
+    }
 }
